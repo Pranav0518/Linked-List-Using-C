@@ -1,0 +1,148 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void CreateQueue(int n);
+void peek();
+void Enqueue(int t);
+void Dequeue();
+void display();
+int j = 0;
+struct node {
+    int data;
+    struct node* next;
+} * stNode, * head, * top;
+
+int main() {
+    int n1, x = 1, c, t;
+    top = NULL;
+    printf("Enter Queue size:");
+    scanf("%d", &t);
+    printf("\nEnter the number of nodes :");
+    scanf("%d", &n1);
+    CreateQueue(n1);
+    while (x == 1) {
+        printf("\n1.Enqueue\n");
+        printf("2.Dequeue\n");
+        printf("3.Peek\n");
+        printf("4.Display\n");
+        printf("Enter a choice\n");
+        scanf("%d", &c);
+        switch (c) {
+        case 1:
+            Enqueue(t);
+            break;
+        case 2:
+            Dequeue();
+            break;
+        case 3:
+            peek();
+            break;
+        case 4:
+            if (top == NULL)
+                printf("UNDERFLOW");
+            else {
+                printf("QUEUE\n");
+                display();
+             }
+            break;
+        default:
+            printf("Invalid Input");
+            break;
+        }
+    }
+    return 0;
+}
+
+void CreateQueue(int n) {
+    struct node* newNode, * temp;
+    int num;
+    stNode = (struct node*)malloc(sizeof(struct node));
+    if (stNode == NULL) {
+        printf(" Memory can not be allocated.");
+    }
+    else {
+        printf(" Input Queue 1 : ");
+        scanf("%d", &num);
+        stNode->data = num;
+        stNode->next = NULL;
+        temp = stNode;
+        head = stNode;
+        top = stNode;
+        j++;
+
+        for (int i = 2; i <= n; i++) {
+            newNode = (struct node*)malloc(sizeof(struct node));
+            if (newNode == NULL) {
+
+                printf(" Memory can not be allocated.");
+                break;
+            }
+            else {
+                printf(" Input Queue %d : ", i);
+                scanf(" %d", &num);
+                newNode->data = num;
+                newNode->next = NULL;
+                temp->next = newNode;
+                temp = temp->next;
+                top = newNode;
+                j++;
+            }
+        }
+    }
+}
+
+void Enqueue(int t) {
+    struct node* newNode, * temp;
+    int num;
+    printf("Enter the data :");
+    scanf("%d", &num);
+    newNode = (struct node*)malloc(sizeof(struct node));
+    if (j == t) {
+        printf(" OVERFLOW ");
+    }
+    else {
+        temp = head;
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+        newNode->data = num;
+        newNode->next = NULL;
+        top = newNode;
+        j++;
+    }
+}
+
+void Dequeue() {
+    struct node *temp;
+    if(top==NULL)
+      printf("UNDERFLOW");
+    else
+    {
+    printf("The dequeued item is %d",head->data);
+    temp=head;
+    head=temp->next;
+    free(temp);
+    j--;
+    }
+}
+
+void peek() {
+    if (top == NULL) {
+        printf("UNDERFLOW");
+    }
+    else {
+        printf("Top value is: %d", top->data);
+    }
+}
+
+void display() {
+    struct node* temp;
+    temp = head;
+
+    while (temp->next != NULL) {
+        printf("%d\n",temp->data);
+        temp = temp->next;
+    }
+    printf("%d", temp->data);
+}
